@@ -1,0 +1,57 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif, monospace;
+}
+
+.typing {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 40px;
+  font-family: monospace;
+}
+
+.typing p span {
+  border-radius: .2em;
+  padding: 3px;
+  font-family: monospace;
+}
+
+.char-active {
+  animation: blink 1s;
+  animation-iteration-count: infinite;
+}
+
+.char-true {
+  background-color: rgb(210 255 210);
+  color: green;
+}
+
+.char-warning {
+  background-color: rgb(252, 255, 210);
+  color: olive;
+}
+
+.char-error {
+  background-color: rgb(255, 210, 210);
+  color: darkred;
+}
+
+@keyframes blink {
+  0% {
+    text-decoration: none;
+  }
+
+  50% {
+    text-decoration: underline;
+    text-decoration-color: #b9b9df;
+  }
+}
