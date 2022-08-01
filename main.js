@@ -5,7 +5,7 @@ function charActive (char) {
 }
 
 function charInactive (char) {
-  return `<span >${char}</span>`
+  return `<span   >${char}</span>`
 }
 
 function charTrue (char) {
@@ -27,8 +27,17 @@ const CHAR_STATES = {
   FALSE: 3,
   WARNING: 4
 }
+
+const CHAR_CLASSES = {
+  [CHAR_STATES.INACTIVE]: '',
+  [CHAR_STATES.ACTIVE]: 'char-active',
+  [CHAR_STATES.TRUE]: 'char-true',
+  [CHAR_STATES.FALSE]: 'char-error',
+  [CHAR_STATES.WARNING]: 'char-warning'
+}
+
 const ignoredKeys = ['Control', 'Shift', 'CapsLock', 'Escape', 'Alt']
-const texto = 'La mecanografía es el proceso de introducir texto o caracteres alfanuméricos en un dispositivo por medio de un teclado como los que poseen las máquinas de escribir, los ordenadores y las calculadoras.'
+const texto = 'La mecanografía'
 const textoInfo = []
 let index = 0
 
@@ -71,14 +80,31 @@ function render (data) {
   document.getElementById('text-preview').innerHTML = html
 }
 
+function update (index) {
+  const textContent = document.getElementById('text-preview')
+  textContent.childNodes[index - 1].removeAttribute('class')
+
+  const char = textoInfo[index - 1]
+  console.log(char)
+  textContent.childNodes[index - 1].classList.add(CHAR_CLASSES[textoInfo[index - 1].state])
+  textContent.childNodes[index].classList.add(CHAR_CLASSES[textoInfo[index].state])
+}
+
 function check (event) {
-  if (!ignoredKeys.includes(event.key) && index <= texto.length - 1) {
-    if (texto[index] === event.key) {
-      textoInfo[index].state = CHAR_STATES.TRUE
-    } else textoInfo[index].state = CHAR_STATES.FALSE
-    index++
-    if (index <= texto.length - 1) textoInfo[index].state = CHAR_STATES.ACTIVE
+  console.log(textoInfo)
+  if (index <= texto.length - 1) {
+    if (event.key === 'Backspace') {
+      textoInfo[index].state = CHAR_STATES.INACTIVE
+      if (index > 0)index--
+    } else if (!ignoredKeys.includes(event.key)) {
+      if (texto[index] === event.key) {
+        textoInfo[index].state = CHAR_STATES.TRUE
+      } else textoInfo[index].state = CHAR_STATES.FALSE
+      index++
+      if (index <= texto.length - 1) textoInfo[index].state = CHAR_STATES.ACTIVE
+    }
   }
+  console.log(textoInfo)
 }
 
 init(texto)
@@ -86,5 +112,5 @@ render(textoInfo)
 
 document.addEventListener('keyup', event => {
   check(event)
-  render(textoInfo)
+  update(index)
 })
