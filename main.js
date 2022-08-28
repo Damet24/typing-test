@@ -23,7 +23,6 @@ async function getText () {
 
 function init () {
   for (const char of text) {
-    console.log(char)
     const testCharInfo = {
       char,
       state: CHAR_STATES.INACTIVE
@@ -66,7 +65,6 @@ window.addEventListener('keyup', event => {
 })
 
 getText().then(() => {
-  console.log(text)
   init()
   render()
 })
