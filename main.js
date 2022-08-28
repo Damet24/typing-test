@@ -8,11 +8,18 @@ const CHAR_STATES = {
   WARNING: 4
 }
 
-const text = 'Este es un texto aleatorio generado por mi, Daniel Mercado UwU'
+let text = 'Este es un texto aleatorio generado por mi, Daniel Mercado UwU'
 const textInfo = []
 let index = 0
 
 const char = (char) => `<span>${char}</span>`
+
+async function getText () {
+  const number = Math.floor(Math.random() * (500 - 0 + 1) + 0)
+  const response = await fetch('https://jsonplaceholder.typicode.com/comments/' + number)
+  const data = await response.json()
+  text = data.body
+}
 
 function init () {
   for (const char of text) {
@@ -59,5 +66,7 @@ window.addEventListener('keyup', event => {
   }
 })
 
-init()
-render()
+getText().then(() => {
+  init()
+  render()
+})
