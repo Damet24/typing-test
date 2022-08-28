@@ -18,11 +18,12 @@ async function getText () {
   const number = Math.floor(Math.random() * (500 - 0 + 1) + 0)
   const response = await fetch('https://jsonplaceholder.typicode.com/comments/' + number)
   const data = await response.json()
-  text = data.body
+  text = data.body.replace(/(\r\n|\n|\r)/gm, ' ')
 }
 
 function init () {
   for (const char of text) {
+    console.log(char)
     const testCharInfo = {
       char,
       state: CHAR_STATES.INACTIVE
@@ -40,8 +41,6 @@ function render () {
 }
 
 window.addEventListener('keypress', event => {
-  console.log(event)
-
   const charElement = document.getElementById('text-preview').childNodes[index + 1]
 
   if (event.key === textInfo[index].char) {
@@ -67,6 +66,7 @@ window.addEventListener('keyup', event => {
 })
 
 getText().then(() => {
+  console.log(text)
   init()
   render()
 })
